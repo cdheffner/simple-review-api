@@ -17,5 +17,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^', include('apps.review_api.urls')),
+    url(r'^', include('apps.review_api.urls', namespace='review_api')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace="rest_framework")),
 ]
