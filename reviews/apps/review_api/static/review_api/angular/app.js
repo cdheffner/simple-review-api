@@ -1,5 +1,14 @@
 var app = angular.module('reviewApp', ['ngRoute']);
 
+app.config(function($interpolateProvider){
+	$interpolateProvider.startSymbol('{/');
+	$interpolateProvider.endSymbol('/}');
+})
+
+app.config(['$httpProvider', function ($httpProvider) {
+	$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+}]);
+
 app.config(function($routeProvider){
 	$routeProvider
 		.when('/', {
