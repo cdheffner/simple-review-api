@@ -64,6 +64,12 @@ class ReviewerManager(models.Manager):
 				return {token: r['token']}
 			else:
 				return {errors: ["Invalid password or email"]}
+	def authenticate(self, rToken):
+		r = Reviewer.objects.filter(token=rToken)
+		if len(r) == 0:
+			return {errors: ["Invalid token"]}
+		else:
+			return {success: True}
 
 
 class Reviewer(models.Model):
