@@ -2,21 +2,62 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Company Reviews API</title>
-	<!-- Angular CDN -->
+	
+	<!-- Angular CDNs -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
 
-	<!-- Angular Material CDNs -->
-	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+	<!-- Bootstrap CDNs -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	{% load staticfiles %}
 	<!-- Angular files -->
 	<script src="{% static 'review_api/angular/app.js' %}"></script>
-</head>
-<body>
+	<script src="{% static 'review_api/angular/controllers/newController.js' %}"></script>
+	<script src="{% static 'review_api/angular/controllers/retrieveController.js' %}"></script>
+	<script src="{% static 'review_api/angular/controllers/submitController.js' %}"></script>
+	<script src="{% static 'review_api/angular/controllers/tokenController.js' %}"></script>
+	<script src="{% static 'review_api/angular/factories/reviewFactory.js' %}"></script>
+	<script src="{% static 'review_api/angular/factories/reviewerFactory.js' %}"></script>
+	<!-- navpill script -->
+	<script src="{% static 'review_api/js/navpill.js' %}"></script>
 
-	<div ng-view></div>
+</head>
+<body ng-app="reviewApp">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<h1>Welcome to the Company Reviews API</h1>
+				<h3>API Authentication Tokens</h3>
+				<p>In order to use the API, you must have an authentication token. You may get an authentication token using the registration form below. If you already have a token, but you can't remember it, please use the token retrieval form below with the email and password you used when you registered.</p>
+				<h3>Using the API</h3>
+				<p>For your convenience, we have set up a user interface with which you may submit reviews and retrieve all the reviews that you have submitted. However, you may also interact with the API programmatically.</p>
+				<h4>API endpoints</h4>
+				<p>[Instructions for including the auth token]</p>
+				<p>[list of API endpoints and their descriptions]</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<ul class="nav nav-pills">
+							<li role="presentation" class="active"><a href="#/register" class="navpill">Register</a></li>
+							<li role="presentation"><a href="#/gettoken" class="navpill">Retrieve Token</a></li>
+							<li role="presentation"><a href="#/submit" class="navpill">Submit Review</a></li>
+							<li role="presentation"><a href="#/retrieve" class="navpill">Retrieve Reviews</a></li>
+						</ul>
+					</div>
+					<div class="panel-body" ng-view></div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>
