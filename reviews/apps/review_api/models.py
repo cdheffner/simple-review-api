@@ -5,6 +5,7 @@ import uuid
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PW_REGEX = re.compile(r'^(?=.*?\d)(?=.*?[A-Z])(?=.*?[a-z])')
+RATING_REGEX = re.compile(r'^[1-5]$')
 
 class CompanyManager(models.Manager):
 	def findOrCreate(self, cname):
@@ -21,6 +22,7 @@ class Company(models.Model):
 	name = models.CharField(max_length=100)
 	created_at = models.DateTimeField(auto_now_add=True)
 	objects = CompanyManager()
+
 
 class ReviewerManager(models.Manager):
 	def create(self, rInfo):
@@ -69,8 +71,7 @@ class ReviewerManager(models.Manager):
 		if len(r) == 0:
 			return {errors: ["Invalid token"]}
 		else:
-			return {success: True}
-
+			return r[0]
 
 class Reviewer(models.Model):
 	first_name = models.CharField(max_length=200)
@@ -81,12 +82,34 @@ class Reviewer(models.Model):
 	created_at = models.DateTimeField
 	objects = ReviewerManager()
 
+
+class ReviewManager(models.Manager):
+	def create(self, review):
+		# Validations
+		errors = []
+		if not RATING_REGEX.match(review['rating']):
+			errors.append("Rating must be from 1 to 5")
+		if len(review['title']) > 64:
+			errors.append("Title must be less than 64 characters long")
+		if len(review['summary']) > 10000:
+			errors.append("Summary must be less than 10,000 characters long")
+		if len(errors) > 0:
+			return {errors: errors}
+		else:
+			# Create new review
+			rev = Review(rating=review['rating'], title=review['title'], summary=review['summary'], ip_address=review['ip_address'], company=review['company'], reviewer=review['reviewer'])
+			rev.save()
+			return {success: True}
+	def retrieve(self, reviewer):
+		reviews = Review.objects.filter(reviewer=reviewer)
+		return reviews
+
 class Review(models.Model):
-	ratings = models.PositiveSmallIntegerField()
+	rating = models.PositiveSmallIntegerField()
 	title = models.CharField(max_length=64)
 	summary = models.TextField()
 	ip_address = models.URLField()
 	submitted_at = models.DateTimeField(auto_now_add = True)
 	company = models.ForeignKey(Company)
 	reviewer = models.ForeignKey(Reviewer)
-
+	objects = ReviewManager()
