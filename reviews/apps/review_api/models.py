@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 import bcrypt
 import uuid
+import re
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PW_REGEX = re.compile(r'^(?=.*?\d)(?=.*?[A-Z])(?=.*?[a-z])')
@@ -39,9 +40,9 @@ class ReviewerManager(models.Manager):
 				errors.append("Last name must be more than 1 character long")
 			if not EMAIL_REGEX.match(rInfo['email']):
 				errors.append("Email address is not valid")
-			if not rInfo['password'] === rInfo['password_confirm']:
+			if not rInfo['password'] == rInfo['password_confirm']:
 				errors.append("Password confirmation must match password")
-			if not PW_REGEX.match(rInfo['password'])
+			if not PW_REGEX.match(rInfo['password']):
 				errors.append("Password must contain at least one number, one uppercase letter, and one lowercase letter")
 			if len(rInfo['password']) < 8:
 				errors.append("Password must be at least 8 characters long")
