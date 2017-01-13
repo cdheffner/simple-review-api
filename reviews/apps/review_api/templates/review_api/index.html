@@ -3,10 +3,20 @@
 <head>
 	<meta charset="utf-8">
 	<title>Company Reviews API</title>
+	<!-- Angular CDN -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
 
+	<!-- Angular Material CDNs -->
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+	{% load staticfiles %}
+	<!-- Angular files -->
+	<script src="{% static 'review_api/angular/app.js' %}"></script>
 </head>
 <body>
+
+	<div ng-view></div>
 
 </body>
 </html>
