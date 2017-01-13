@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from djang0.http import JsonResponse
+from django.http import JsonResponse
 
 def index(request):
 	return render(request, 'review_api/index.html')
