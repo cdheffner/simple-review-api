@@ -23,11 +23,11 @@
 	</form>
 
 	<div ng-if="reviews" class="well well-sm">
-		<div ng-for="review in reviews">
+		<div ng-repeat="review in reviews">
 			<h4>{/ review.title /}</h4>
 			<ul>
 				<li><strong>Rating:</strong> {/ review.rating /}</li>
-				<li><strong>Date:</strong> {/ review.created_at | date:'short' /}</li>
+				<li><strong>Date:</strong> {/ review.submitted_at | date:'short' /}</li>
 				<li><strong>Company:</strong> {/ review.company.name /}</li>
 				<li><strong>Summary:</strong> {/ review.summary /}</li>
 			</ul>
