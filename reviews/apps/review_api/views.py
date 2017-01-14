@@ -59,7 +59,10 @@ def create(request):
 	else:
 		return JsonResponse({'errors': ["Invalid Method"]})
 
-def retrieve(request):
-	placeholder = {'errors': ["this is a placeholder"]}
-	return JsonResponse(placeholder)
+def retrieve(request, token):
+	auth = Reviewer.objects.authenticate(token)
+	if isinstance(auth, dict) and 'errors' in auth:
+			return JsonResponse(auth)
+	reviews = Review.objects.retrieve(auth)
+	return JsonResponse(reviews)
 

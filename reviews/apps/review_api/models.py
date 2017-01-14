@@ -117,7 +117,26 @@ class ReviewManager(models.Manager):
 			rev.save()
 			return {'success': True}
 	def retrieve(self, reviewer):
-		reviews = Review.objects.filter(reviewer=reviewer)
+		queryset = Review.objects.filter(reviewer=reviewer)
+		reviews = []
+		for item in queryset:
+			review = {
+				'rating': item.rating, 
+				'title': item.title, 
+				'summary': item.summary, 
+				'ip_address': item.ip_address, 
+				'submitted_at': item.submitted_at,
+				'company': {
+					'name': item.company.name,
+					'created_at': item.company.created_at
+				},
+				'reviewer': {
+					'first_name': item.reviewer.first_name,
+					'last_name': item.reviewer.last_name,
+					'email': item.reviewer.email
+				}
+			}
+			reviews.append(review)
 		return {'reviews': reviews}
 
 class Review(models.Model):

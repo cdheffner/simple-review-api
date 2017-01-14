@@ -21,4 +21,16 @@
 		</div>
 		<button type="submit" class="btn btn-default">Get Reviews</button>
 	</form>
+
+	<div ng-if="reviews" class="well well-sm">
+		<div ng-for="review in reviews">
+			<h4>{/ review.title /}</h4>
+			<ul>
+				<li><strong>Rating:</strong> {/ review.rating /}</li>
+				<li><strong>Date:</strong> {/ review.created_at | date:'short' /}</li>
+				<li><strong>Company:</strong> {/ review.company.name /}</li>
+				<li><strong>Summary:</strong> {/ review.summary /}</li>
+			</ul>
+		</div>
+	</div>
 </div>

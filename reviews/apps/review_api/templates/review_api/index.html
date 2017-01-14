@@ -60,9 +60,13 @@
 							<li>Required form fields are token, title, company, rating, and summary.</li>
 						</ul>
 					</li>
+					<li>www.companyreviews.com/retrieve/[Authentication Token]
+						<ul>
+							<li>Retrieves all reviews for the user matching the authentication token. Returns {'errors': [array of errors]} or {'reviews': [array of reviews]}. Each item in the array of reviews will have the following structure: {'company': {'name': [company name], 'created_at': [date of first review of company]}, 'reviewer': {'email': [reviewer's email], 'first_name': [reviewer's first name], 'last_name': [reviewer's last name]}, 'ip_address': [the ip address from which the review was submitted], 'rating': [1-5], 'title': [title of the review], 'summary': [body of the review], 'submitted_at': [date the review was subitted]}</li>
+							<li>GET request.</li>
+						</ul>
+					</li>
 				</ul>
-				<p>[Instructions for including the auth token]</p>
-				<p>[list of API endpoints and their descriptions]</p>
 			</div>
 		</div>
 		<div class="row">
