@@ -7,7 +7,7 @@
 	</ul>
 </div>
 <div class="panel-body">
-	<p ng-if="token" class="text-success">Successfully retrieved token! Please save your authentication token: {/ token /}</p>
+	<p ng-if="success" class="text-success">Successfully submitted review!</p>
 
 	<div ng-if="errors" class="well well-sm">
 		<h4 class="text-danger">Errors:</h4>
@@ -37,6 +37,6 @@
 			<label for="summary">Summary</label>
 			<textarea class="form-control" id="summary" ng-model="form.summary"></textarea>
 		</div>
-		<button type="submit" class="btn btn-default">Get Token</button>
+		<button type="submit" class="btn btn-default">Submit Review</button>
 	</form>
 </div>

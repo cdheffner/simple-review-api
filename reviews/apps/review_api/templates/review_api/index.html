@@ -53,6 +53,13 @@
 							<li>Required form fields are email and password.</li>
 						</ul>
 					</li>
+					<li>www.companyreviews.com/submit
+						<ul>
+							<li>Submits a review. Returns {'success': true} or {'errors': [array of errors]}.</li>
+							<li>POST request. Include the csrf token.</li>
+							<li>Required form fields are token, title, company, rating, and summary.</li>
+						</ul>
+					</li>
 				</ul>
 				<p>[Instructions for including the auth token]</p>
 				<p>[list of API endpoints and their descriptions]</p>

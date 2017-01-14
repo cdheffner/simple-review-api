@@ -2,7 +2,12 @@ app.factory('reviewFactory', function($http){
 
 	function ReviewFactory(){};
 
-	//add prototype methods
+	ReviewFactory.prototype.submit = function(submission, callback) {
+		$http.post('/submit', submission)
+			.then(function(result){
+				callback(result.data);
+			})
+	};
 	
 	return new ReviewFactory();
 })

@@ -12,7 +12,7 @@ RATING_REGEX = re.compile(r'^[1-5]$')
 class CompanyManager(models.Manager):
 	def findOrCreate(self, cname):
 		comp = Company.objects.filter(name=cname)
-		if comp[0]:
+		if len(comp) > 0:
 			return comp[0]
 		else:
 			comp = Company(name=cname)
@@ -103,7 +103,7 @@ class ReviewManager(models.Manager):
 	def create(self, review):
 		# Validations
 		errors = []
-		if not RATING_REGEX.match(review['rating']):
+		if not RATING_REGEX.match(str(review['rating'])):
 			errors.append("Rating must be from 1 to 5")
 		if len(review['title']) > 64:
 			errors.append("Title must be less than 64 characters long")
@@ -113,12 +113,12 @@ class ReviewManager(models.Manager):
 			return {'errors': errors}
 		else:
 			# Create new review
-			rev = Review(rating=review['rating'], title=review['title'], summary=review['summary'], ip_address=review['ip_address'], company=review['company'], reviewer=review['reviewer'])
+			rev = Review(rating=int(review['rating']), title=review['title'], summary=review['summary'], ip_address=review['ip_address'], company=review['company'], reviewer=review['reviewer'])
 			rev.save()
 			return {'success': True}
 	def retrieve(self, reviewer):
 		reviews = Review.objects.filter(reviewer=reviewer)
-		return reviews
+		return {'reviews': reviews}
 
 class Review(models.Model):
 	rating = models.PositiveSmallIntegerField()
