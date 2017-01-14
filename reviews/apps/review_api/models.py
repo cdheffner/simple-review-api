@@ -3,6 +3,7 @@ from django.db import models
 import bcrypt
 import uuid
 import re
+import pprint
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PW_REGEX = re.compile(r'^(?=.*?\d)(?=.*?[A-Z])(?=.*?[a-z])')
@@ -11,7 +12,7 @@ RATING_REGEX = re.compile(r'^[1-5]$')
 class CompanyManager(models.Manager):
 	def findOrCreate(self, cname):
 		comp = Company.objects.filter(name=cname)
-		if comp[0]:
+		if len(comp) > 0:
 			return comp[0]
 		else:
 			comp = Company(name=cname)
@@ -76,9 +77,9 @@ class ReviewerManager(models.Manager):
 			return {'errors': ["Invalid password or email"]}
 		else:
 			r = r[0]
-			pwhash = r['password']
-			if bcrypt.hashpw(info['password'].encode('utf-8'), pwhash) == pwhash:
-				return {'token': r['token']}
+			pwhash = r.password
+			if bcrypt.hashpw(info['password'].encode('utf-8'), pwhash.encode('utf-8')) == pwhash:
+				return {'token': r.token}
 			else:
 				return {'errors': ["Invalid password or email"]}
 	def authenticate(self, rToken):
@@ -102,7 +103,7 @@ class ReviewManager(models.Manager):
 	def create(self, review):
 		# Validations
 		errors = []
-		if not RATING_REGEX.match(review['rating']):
+		if not RATING_REGEX.match(str(review['rating'])):
 			errors.append("Rating must be from 1 to 5")
 		if len(review['title']) > 64:
 			errors.append("Title must be less than 64 characters long")
@@ -112,12 +113,31 @@ class ReviewManager(models.Manager):
 			return {'errors': errors}
 		else:
 			# Create new review
-			rev = Review(rating=review['rating'], title=review['title'], summary=review['summary'], ip_address=review['ip_address'], company=review['company'], reviewer=review['reviewer'])
+			rev = Review(rating=int(review['rating']), title=review['title'], summary=review['summary'], ip_address=review['ip_address'], company=review['company'], reviewer=review['reviewer'])
 			rev.save()
 			return {'success': True}
 	def retrieve(self, reviewer):
-		reviews = Review.objects.filter(reviewer=reviewer)
-		return reviews
+		queryset = Review.objects.filter(reviewer=reviewer)
+		reviews = []
+		for item in queryset:
+			review = {
+				'rating': item.rating, 
+				'title': item.title, 
+				'summary': item.summary, 
+				'ip_address': item.ip_address, 
+				'submitted_at': item.submitted_at,
+				'company': {
+					'name': item.company.name,
+					'created_at': item.company.created_at
+				},
+				'reviewer': {
+					'first_name': item.reviewer.first_name,
+					'last_name': item.reviewer.last_name,
+					'email': item.reviewer.email
+				}
+			}
+			reviews.append(review)
+		return {'reviews': reviews}
 
 class Review(models.Model):
 	rating = models.PositiveSmallIntegerField()

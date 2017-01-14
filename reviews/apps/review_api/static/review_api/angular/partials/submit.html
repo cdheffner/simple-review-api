@@ -1,1 +1,42 @@
-<h1>submit</h1>
+<div class="panel-heading">
+	<ul class="nav nav-pills">
+		<li role="presentation"><a href="#/register" class="navpill">Register</a></li>
+		<li role="presentation"><a href="#/gettoken" class="navpill">Retrieve Token</a></li>
+		<li role="presentation" class="active"><a href="#/submit" class="navpill">Submit Review</a></li>
+		<li role="presentation"><a href="#/retrieve" class="navpill">Retrieve Reviews</a></li>
+	</ul>
+</div>
+<div class="panel-body">
+	<p ng-if="success" class="text-success">Successfully submitted review!</p>
+
+	<div ng-if="errors" class="well well-sm">
+		<h4 class="text-danger">Errors:</h4>
+		<ul class="text-danger">
+			<li ng-repeat="error in errors">{/ error /}</li>
+		</ul>
+	</div>
+
+	<form ng-submit="sC.submit()">
+		<div class="form-group">
+			<label for="token">Auth Token</label>
+			<input type="text" class="form-control" id="token" ng-model="form.token">
+		</div>
+		<div class="form-group">
+			<label for="title">Title</label>
+			<input type="text" class="form-control" id="title" ng-model="form.title">
+		</div>
+		<div class="form-group">
+			<label for="company">Company</label>
+			<input type="text" class="form-control" id="company" ng-model="form.company">
+		</div>
+		<div class="form-group">
+			<label for="rating">Rating</label>
+			<input type="number" min="1" max="5" class="form-control" id="rating" ng-model="form.rating">
+		</div>
+		<div class="form-group">
+			<label for="summary">Summary</label>
+			<textarea class="form-control" id="summary" ng-model="form.summary"></textarea>
+		</div>
+		<button type="submit" class="btn btn-default">Submit Review</button>
+	</form>
+</div>

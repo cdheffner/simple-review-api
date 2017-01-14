@@ -1,1 +1,30 @@
-<h1>token</h1>
+<div class="panel-heading">
+	<ul class="nav nav-pills">
+		<li role="presentation"><a href="#/register" class="navpill">Register</a></li>
+		<li role="presentation" class="active"><a href="#/gettoken" class="navpill">Retrieve Token</a></li>
+		<li role="presentation"><a href="#/submit" class="navpill">Submit Review</a></li>
+		<li role="presentation"><a href="#/retrieve" class="navpill">Retrieve Reviews</a></li>
+	</ul>
+</div>
+<div class="panel-body">
+	<p ng-if="token" class="text-success">Successfully retrieved token! Please save your authentication token: {/ token /}</p>
+
+	<div ng-if="errors" class="well well-sm">
+		<h4 class="text-danger">Errors:</h4>
+		<ul class="text-danger">
+			<li ng-repeat="error in errors">{/ error /}</li>
+		</ul>
+	</div>
+
+	<form ng-submit="tC.getToken()">
+		<div class="form-group">
+			<label for="email">Email</label>
+			<input type="email" class="form-control" id="email" ng-model="form.email">
+		</div>
+		<div class="form-group">
+			<label for="password">Password</label>
+			<input type="password" class="form-control" id="password" ng-model="form.password">
+		</div>
+		<button type="submit" class="btn btn-default">Get Token</button>
+	</form>
+</div>

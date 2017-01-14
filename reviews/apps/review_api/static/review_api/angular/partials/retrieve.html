@@ -1,1 +1,36 @@
-<h1>retrieve</h1>
+<div class="panel-heading">
+	<ul class="nav nav-pills">
+		<li role="presentation"><a href="#/register" class="navpill">Register</a></li>
+		<li role="presentation"><a href="#/gettoken" class="navpill">Retrieve Token</a></li>
+		<li role="presentation"><a href="#/submit" class="navpill">Submit Review</a></li>
+		<li role="presentation" class="active"><a href="#/retrieve" class="navpill">Retrieve Reviews</a></li>
+	</ul>
+</div>
+<div class="panel-body">
+	<div ng-if="errors" class="well well-sm">
+		<h4 class="text-danger">Errors:</h4>
+		<ul class="text-danger">
+			<li ng-repeat="error in errors">{/ error /}</li>
+		</ul>
+	</div>
+
+	<form ng-submit="rC.retrieve()">
+		<div class="form-group">
+			<label for="token">Token</label>
+			<input type="text" class="form-control" id="token" ng-model="token">
+		</div>
+		<button type="submit" class="btn btn-default">Get Reviews</button>
+	</form>
+
+	<div ng-if="reviews" class="well well-sm">
+		<div ng-repeat="review in reviews">
+			<h4>{/ review.title /}</h4>
+			<ul>
+				<li><strong>Rating:</strong> {/ review.rating /}</li>
+				<li><strong>Date:</strong> {/ review.submitted_at | date:'short' /}</li>
+				<li><strong>Company:</strong> {/ review.company.name /}</li>
+				<li><strong>Summary:</strong> {/ review.summary /}</li>
+			</ul>
+		</div>
+	</div>
+</div>
