@@ -16,14 +16,26 @@
 		</ul>
 	</div>
 
-	<form ng-submit="tC.getToken">
+	<form ng-submit="sC.submit()">
 		<div class="form-group">
-			<label for="email">Email</label>
-			<input type="email" class="form-control" id="email" ng-model="form.email">
+			<label for="token">Auth Token</label>
+			<input type="text" class="form-control" id="token" ng-model="form.token">
 		</div>
 		<div class="form-group">
-			<label for="password">Password</label>
-			<input type="password" class="form-control" id="password" ng-model="form.password">
+			<label for="title">Title</label>
+			<input type="text" class="form-control" id="title" ng-model="form.title">
+		</div>
+		<div class="form-group">
+			<label for="company">Company</label>
+			<input type="text" class="form-control" id="company" ng-model="form.company">
+		</div>
+		<div class="form-group">
+			<label for="rating">Rating</label>
+			<input type="number" min="1" max="5" class="form-control" id="rating" ng-model="form.rating">
+		</div>
+		<div class="form-group">
+			<label for="summary">Summary</label>
+			<textarea class="form-control" id="summary" ng-model="form.summary"></textarea>
 		</div>
 		<button type="submit" class="btn btn-default">Get Token</button>
 	</form>
