@@ -9,6 +9,14 @@ app.factory('reviewFactory', function($http){
 			})
 	};
 	
+	ReviewFactory.prototype.index = function(token, callback) {
+		url = '/retrieve/' + token;
+		$http.get(url)
+			.then(function(result){
+				callback(result.data)
+			})
+	};
+
 	return new ReviewFactory();
 })
 
