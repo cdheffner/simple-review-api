@@ -6,7 +6,9 @@ app.config(function($interpolateProvider){
 })
 
 app.config(['$httpProvider', function ($httpProvider) {
-	$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+	$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+	$httpProvider.defaults.headers.common['source'] = 'website';
 }]);
 
 app.config(function($routeProvider){

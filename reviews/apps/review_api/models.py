@@ -27,50 +27,64 @@ class Company(models.Model):
 
 class ReviewerManager(models.Manager):
 	def create(self, rInfo):
-		# check if email is in database already
-		r = Reviewer.objects.filter(email=rInfo['email'])
-		if r[0]:
-			return {errors: ["Email already exists"]}
+		# validate new reviewer metadata
+		errors = []
+		
+		if not 'first_name' in rInfo:
+			errors.append("First name is required")
+		elif len(rInfo['first_name']) < 2:
+			errors.append("First name must be more than 1 character long")
+		
+		if not 'last_name' in rInfo:
+			errors.append("Last name is required")
+		elif len(rInfo['last_name']) < 2:
+			errors.append("Last name must be more than 1 character long")
+
+		if not 'email' in rInfo:
+			errors.append("Email is required")
+		elif not EMAIL_REGEX.match(rInfo['email']):
+			errors.append("Email address is not valid")
 		else: 
-			# validate new reviewer metadata
-			errors = []
-			if len(rInfo['first_name']) < 2:
-				errors.append("First name must be more than 1 character long")
-			if len(rInfo['last_name']) < 2:
-				errors.append("Last name must be more than 1 character long")
-			if not EMAIL_REGEX.match(rInfo['email']):
-				errors.append("Email address is not valid")
-			if not rInfo['password'] == rInfo['password_confirm']:
-				errors.append("Password confirmation must match password")
-			if not PW_REGEX.match(rInfo['password']):
-				errors.append("Password must contain at least one number, one uppercase letter, and one lowercase letter")
-			if len(rInfo['password']) < 8:
-				errors.append("Password must be at least 8 characters long")
-			# check errors
-			if len(errors) > 0:
-				return {errors: errors}
-			else:
-				# create new reviewer
-				pwhash = bcrypt.hashpw(rInfo['password'], bcrypt.gensalt())
-				newtoken = uuid.uuid4()
-				newR = Reviewer(first_name=rInfo['first_name'], last_name=rInfo['last_name'], email=rInfo['email'], password=pwhash, token=newtoken)
-				newR.save()
-				return {token: newtoken}
+			r = Reviewer.objects.filter(email=rInfo['email'])
+			if len(r) > 0:
+				return {'errors': ["Email already exists"]}
+		
+		if not 'password' in rInfo:
+			errors.append("Password is required")
+		elif not 'password_confirm' in rInfo:
+			errors.append("Password confirmation is required")
+		elif not rInfo['password'] == rInfo['password_confirm']:
+			errors.append("Password confirmation must match password")
+		elif not PW_REGEX.match(rInfo['password']):
+			errors.append("Password must contain at least one number, one uppercase letter, and one lowercase letter")
+		elif len(rInfo['password']) < 8:
+			errors.append("Password must be at least 8 characters long")
+
+		# check errors
+		if len(errors) > 0:
+			return {'errors': errors}
+		else:
+			# create new reviewer
+			pwhash = bcrypt.hashpw(rInfo['password'].encode('utf-8'), bcrypt.gensalt())
+			newtoken = uuid.uuid4()
+			newR = Reviewer(first_name=rInfo['first_name'], last_name=rInfo['last_name'], email=rInfo['email'], password=pwhash, token=newtoken)
+			newR.save()
+			return {'token': newtoken}
 	def retrieveToken(self, info):
 		r = Reviewer.objects.filter(email=info['email'])
 		if len(r) == 0:
-			return {errors: ["Invalid password or email"]}
+			return {'errors': ["Invalid password or email"]}
 		else:
 			r = r[0]
 			pwhash = r['password']
-			if bcrypt.hashpw(info['password'], pwhash) == pwhash:
-				return {token: r['token']}
+			if bcrypt.hashpw(info['password'].encode('utf-8'), pwhash) == pwhash:
+				return {'token': r['token']}
 			else:
-				return {errors: ["Invalid password or email"]}
+				return {'errors': ["Invalid password or email"]}
 	def authenticate(self, rToken):
 		r = Reviewer.objects.filter(token=rToken)
 		if len(r) == 0:
-			return {errors: ["Invalid token"]}
+			return {'errors': ["Invalid token"]}
 		else:
 			return r[0]
 
@@ -95,12 +109,12 @@ class ReviewManager(models.Manager):
 		if len(review['summary']) > 10000:
 			errors.append("Summary must be less than 10,000 characters long")
 		if len(errors) > 0:
-			return {errors: errors}
+			return {'errors': errors}
 		else:
 			# Create new review
 			rev = Review(rating=review['rating'], title=review['title'], summary=review['summary'], ip_address=review['ip_address'], company=review['company'], reviewer=review['reviewer'])
 			rev.save()
-			return {success: True}
+			return {'success': True}
 	def retrieve(self, reviewer):
 		reviews = Review.objects.filter(reviewer=reviewer)
 		return reviews

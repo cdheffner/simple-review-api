@@ -5,11 +5,7 @@ app.factory('reviewerFactory', function($http){
 	ReviewerFactory.prototype.create = function(newReviewer, callback) {
 		$http.post('/register', newReviewer)
 			.then(function(result){
-				if (result.data.errors){
-					return result.data;
-				} else {
-					return result.data;
-				}
+				callback(result.data);
 			})
 	};
 	

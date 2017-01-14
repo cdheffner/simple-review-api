@@ -36,8 +36,13 @@
 				<h3>API Authentication Tokens</h3>
 				<p>In order to use the API, you must have an authentication token. You may get an authentication token using the registration form below. If you already have a token, but you can't remember it, please use the token retrieval form below with the email and password you used when you registered.</p>
 				<h3>Using the API</h3>
-				<p>For your convenience, we have set up a user interface with which you may submit reviews and retrieve all the reviews that you have submitted. However, you may also interact with the API programmatically.</p>
+				<p>In order to register users, retrieve tokens, or submit reviews, you will first need to send a GET request to the website to retrieve the csrftoken cookie. In the POST requests, attach the csrftoken as a header with a key of "X-CSRFToken". Retrieving user reviews is a GET request and does not need a csrf token.</p>
+				<p>Data in the body of POST requests should be in the x-www-form-urlencoded format.</p>
 				<h4>API endpoints</h4>
+				<p>NOTE: companyreviews.com is not an actual website.</p>
+				<ul>
+					<li>www.companyreviews.com/register -- POST request. Include the csrf token. Required form fields are first_name, last_name, email, password, and password_confirm.</li>
+				</ul>
 				<p>[Instructions for including the auth token]</p>
 				<p>[list of API endpoints and their descriptions]</p>
 			</div>
