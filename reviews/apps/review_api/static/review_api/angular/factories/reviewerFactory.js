@@ -8,6 +8,13 @@ app.factory('reviewerFactory', function($http){
 				callback(result.data);
 			})
 	};
+
+	ReviewerFactory.prototype.getToken = function(info, callback) {
+		$http.post('/token', info)
+			.then(function(result){
+				callback(result.data);
+			})
+	};
 	
 	return new ReviewerFactory();
 })

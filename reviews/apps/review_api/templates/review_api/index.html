@@ -23,8 +23,6 @@
 	<script src="{% static 'review_api/angular/controllers/tokenController.js' %}"></script>
 	<script src="{% static 'review_api/angular/factories/reviewFactory.js' %}"></script>
 	<script src="{% static 'review_api/angular/factories/reviewerFactory.js' %}"></script>
-	<!-- navpill script -->
-	<script src="{% static 'review_api/js/navpill.js' %}"></script>
 
 </head>
 <body ng-app="reviewApp">
@@ -41,7 +39,20 @@
 				<h4>API endpoints</h4>
 				<p>NOTE: companyreviews.com is not an actual website.</p>
 				<ul>
-					<li>www.companyreviews.com/register -- POST request. Include the csrf token. Required form fields are first_name, last_name, email, password, and password_confirm.</li>
+					<li>www.companyreviews.com/register
+						<ul>
+							<li>Register's a new user. Returns the user's authentication token.</li>
+							<li>POST request. Include the csrf token.</li>
+							<li>Required form fields are first_name, last_name, email, password, and password_confirm.</li>
+						</ul>
+					</li>
+					<li>www.companyreviews.com/token
+						<ul>
+							<li>Returns a user's authentication token.</li>
+							<li>POST request. Include the csrf token.</li>
+							<li>Required form fields are email and password.</li>
+						</ul>
+					</li>
 				</ul>
 				<p>[Instructions for including the auth token]</p>
 				<p>[list of API endpoints and their descriptions]</p>
@@ -49,16 +60,8 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<ul class="nav nav-pills">
-							<li role="presentation" class="active"><a href="#/register" class="navpill">Register</a></li>
-							<li role="presentation"><a href="#/gettoken" class="navpill">Retrieve Token</a></li>
-							<li role="presentation"><a href="#/submit" class="navpill">Submit Review</a></li>
-							<li role="presentation"><a href="#/retrieve" class="navpill">Retrieve Reviews</a></li>
-						</ul>
-					</div>
-					<div class="panel-body" ng-view></div>
+				<div class="panel panel-default" ng-view>
+					
 				</div>
 			</div>
 		</div>

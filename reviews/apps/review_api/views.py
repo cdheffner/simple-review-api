@@ -19,6 +19,19 @@ def register(request):
 	else:
 		return JsonResponse({errors: ["Invalid Method"]})
 
+def token(request):
+	if request.method == "POST":
+		if 'HTTP_SOURCE' in request.META:
+			if request.META['HTTP_SOURCE'] == 'website':
+				data = json.loads(request.body)
+				token = Reviewer.objects.retrieveToken(data)
+				return JsonResponse(token)
+		else:
+			token = Reviewer.objects.retrieveToken(request.POST.copy())
+			return JsonResponse(token)
+	else:
+		return JsonResponse({errors: ["Invalid Method"]})
+
 def create(request):
 	if request.method == "POST":
 		placeholder = {errors: ["this is a placeholder"]}

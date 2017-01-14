@@ -3,6 +3,7 @@ from django.db import models
 import bcrypt
 import uuid
 import re
+import pprint
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PW_REGEX = re.compile(r'^(?=.*?\d)(?=.*?[A-Z])(?=.*?[a-z])')
@@ -76,9 +77,9 @@ class ReviewerManager(models.Manager):
 			return {'errors': ["Invalid password or email"]}
 		else:
 			r = r[0]
-			pwhash = r['password']
-			if bcrypt.hashpw(info['password'].encode('utf-8'), pwhash) == pwhash:
-				return {'token': r['token']}
+			pwhash = r.password
+			if bcrypt.hashpw(info['password'].encode('utf-8'), pwhash.encode('utf-8')) == pwhash:
+				return {'token': r.token}
 			else:
 				return {'errors': ["Invalid password or email"]}
 	def authenticate(self, rToken):
